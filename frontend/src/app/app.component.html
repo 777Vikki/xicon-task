@@ -1,0 +1,193 @@
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-header text-center h3">Event Management System</div>
+    <div class="card-body">
+      <form [formGroup]="eventManagementForm">
+        <div class="form">
+          <div class="row form-group justify-content-start">
+            <div class="col-md-2">
+              <label class="font-weight-bold" for="eventName">Event Name</label>
+            </div>
+            <div class="col-md-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="eventName"
+                id="eventName"
+              />
+            </div>
+          </div>
+          <div class="row form-group justify-content-start">
+            <div class="col-md-2">
+              <label class="font-weight-bold" for="eventDesc"
+                >Event Description</label
+              >
+            </div>
+            <div class="col-md-4">
+              <textarea
+                class="form-control"
+                formControlName="eventDesc"
+                id="eventDesc"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="row form-group">
+                <div class="col-md-4">
+                  <label class="font-weight-bold" for="startDate"
+                    >Start Date</label
+                  >
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    placeholder="YYYY-MM-DD"
+                    class="form-control"
+                    formControlName="startDate"
+                    bsDatepicker
+                    id="startDate"
+                    [bsConfig]="{
+                      isAnimated: true,
+                      dateInputFormat: 'YYYY-MM-DD'
+                    }"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row form-group">
+                <div class="col-md-4">
+                  <label class="font-weight-bold" for="endDate">End date</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    placeholder="YYYY-MM-DD"
+                    class="form-control"
+                    formControlName="endDate"
+                    bsDatepicker
+                    id="endDate"
+                    [bsConfig]="{
+                      isAnimated: true,
+                      dateInputFormat: 'YYYY-MM-DD'
+                    }"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row form-group justify-content-start">
+            <div class="col-md-2">
+              <label class="font-weight-bold" for="organizer">Organizer</label>
+            </div>
+            <div class="col-md-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="organizer"
+                id="organizer"
+              />
+            </div>
+          </div>
+          <div formArrayName="tickets">
+            <div class="row form-group justify-content-start">
+              <div class="col-md-2 font-weight-bold">Tickets</div>
+              <div class="col-md-4">
+                <button
+                  class="btn btn-outline-primary"
+                  (click)="addTicket()"
+                  [disabled]="eventManagementForm.invalid"
+                >
+                  Add new ticket
+                </button>
+              </div>
+            </div>
+
+            <div
+              class="row form-group"
+              *ngIf="eventManagementForm.value.tickets.length > 0"
+            >
+              <div class="col-2 font-weight-bold">ID</div>
+              <div class="col-3 font-weight-bold">Ticket No</div>
+              <div class="col-2 font-weight-bold">Price</div>
+            </div>
+
+            <div
+              class="form-group"
+              *ngFor="let ticket of tickets.controls; let i = index"
+            >
+              <ng-container [formGroup]="ticket">
+                <div class="row">
+                  <div class="col-2">
+                    <ng-container *ngIf="!ticket.value.isSave">
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="id"
+                      />
+                    </ng-container>
+                    <ng-container *ngIf="ticket.value.isSave">
+                      {{ ticket.value.id }}
+                    </ng-container>
+                  </div>
+                  <div class="col-3">
+                    <ng-container *ngIf="!ticket.value.isSave">
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="ticketNo"
+                      />
+                    </ng-container>
+                    <ng-container *ngIf="ticket.value.isSave">
+                      {{ ticket.value.ticketNo }}
+                    </ng-container>
+                  </div>
+                  <div class="col-3">
+                    <ng-container *ngIf="!ticket.value.isSave">
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="price"
+                      />
+                    </ng-container>
+                    <ng-container *ngIf="ticket.value.isSave">
+                      {{ ticket.value.price }}
+                    </ng-container>
+                  </div>
+                  <div class="col-2 text-right">
+                    <button
+                      class="btn btn-success"
+                      (click)="saveDetail(i)"
+                      [disabled]="ticket.invalid"
+                    >
+                      {{ ticket.value.isSave ? "Edit" : "Save" }}
+                    </button>
+                  </div>
+                  <div class="col-2 text-left">
+                    <button class="btn btn-danger" (click)="removeRow(i)">
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div>
+            <button
+              type="button"
+              class="btn btn-success"
+              (click)="onSubmit()"
+              [disabled]="checkDisabled()"
+            >
+              Save Event
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

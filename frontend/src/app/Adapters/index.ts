@@ -1,0 +1,1 @@
+export { EventManagementApiAdapter } from "./event-management-api.adapter";
